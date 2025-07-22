@@ -30,10 +30,6 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             // Add services to the container.
-            // Add DbContext
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
 
             services.AddApplication();
             services.AddInfrastructure(Configuration);
