@@ -1,4 +1,6 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Products.Commands.DeleteProduct
@@ -23,8 +25,7 @@ namespace Application.Products.Commands.DeleteProduct
 
             if (entity == null)
             {
-                // throw new NotFoundException(nameof(TodoItem), request.Id);
-                throw new Exception("No existe papee");
+                throw new NotFoundException(nameof(Product), request.Id);
             }
 
             _context.Products.Remove(entity);
