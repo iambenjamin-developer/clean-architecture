@@ -3,6 +3,7 @@ using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Reflection;
 
 namespace Infrastructure.Persistence
@@ -23,22 +24,20 @@ namespace Infrastructure.Persistence
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
 
-
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
             {
-                switch (entry.State)
+                if (entry.State is EntityState.Added or EntityState.Modified)
                 {
-                    case EntityState.Added:
-                        entry.Entity.CreatedBy = "CreatedByBenjamín"; //_currentUserService.UserId;
-                        entry.Entity.Created = DateTime.UtcNow; //_dateTime.Now;
-                        break;
-
-                    case EntityState.Modified:
-                        entry.Entity.LastModifiedBy = "LastModifiedByBenjamín"; // _currentUserService.UserId;
-                        entry.Entity.LastModified = DateTime.UtcNow; //_dateTime.Now;
-                        break;
+                    var utcNow = DateTime.UtcNow;
+                    if (entry.State == EntityState.Added)
+                    {
+                        entry.Entity.CreatedBy = "System"; //_user.Id;
+                        entry.Entity.Created = utcNow;
+                    }
+                    entry.Entity.LastModifiedBy = "System"; // _user.Id;
+                    entry.Entity.LastModified = utcNow;
                 }
             }
 

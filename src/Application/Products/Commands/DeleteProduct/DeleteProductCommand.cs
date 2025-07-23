@@ -24,7 +24,7 @@ namespace Application.Products.Commands.DeleteProduct
             if (entity == null)
             {
                 // throw new NotFoundException(nameof(TodoItem), request.Id);
-                throw new Exception();
+                throw new Exception("No existe papee");
             }
 
             _context.Products.Remove(entity);
