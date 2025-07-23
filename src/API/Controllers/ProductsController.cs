@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("{id}:long")]
+        [HttpPut("{id:long}")]
         public async Task<ActionResult> Update(long id, UpdateProductCommand command)
         {
             if (id != command.Id)
@@ -40,21 +40,12 @@ namespace API.Controllers
         }
 
 
-        [HttpDelete("{id}:long")]
+        [HttpDelete("{id:long}")]
         public async Task<ActionResult> Delete(long id)
         {
-            try
-            {
-                await Mediator.Send(new DeleteProductCommand { Id = id });
+            await Mediator.Send(new DeleteProductCommand { Id = id });
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest(ex.Message);
-            }
-
+            return NoContent();
         }
 
 
