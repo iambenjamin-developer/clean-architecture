@@ -43,9 +43,18 @@ namespace API.Controllers
         [HttpDelete("{id}:long")]
         public async Task<ActionResult> Delete(long id)
         {
-            await Mediator.Send(new DeleteProductCommand { Id = id });
+            try
+            {
+                await Mediator.Send(new DeleteProductCommand { Id = id });
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
         }
 
 
