@@ -2,6 +2,7 @@
 using Application.Products.Commands.CreateProduct;
 using Application.Products.Commands.DeleteProduct;
 using Application.Products.Commands.UpdateProduct;
+using Application.Products.DTOs;
 using Application.Products.Queries.GetProductsWithPagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
