@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace API.Filters
 {
@@ -15,8 +14,11 @@ namespace API.Filters
             // Register known exception types and handlers.
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
-                //{ typeof(ValidationException), HandleValidationException },
+                { typeof(BadRequestException), HandleBadRequestException },
                 { typeof(NotFoundException), HandleNotFoundException },
+                { typeof(GatewayTimeoutException), HandleGatewayTimeoutException },
+                { typeof(ServiceUnavailableException), HandleServiceUnavailableException },
+                //{ typeof(ValidationException), HandleValidationException },
                 //{ typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 //{ typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             };
@@ -73,18 +75,71 @@ namespace API.Filters
             context.ExceptionHandled = true;
         }
 
+        private void HandleBadRequestException(ExceptionContext context)
+        {
+            var exception = context.Exception as BadRequestException;
+
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "BadRequest",
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                Detail = context.Exception.Message
+            };
+
+            context.Result = new BadRequestObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
+
         private void HandleNotFoundException(ExceptionContext context)
         {
             var exception = context.Exception as NotFoundException;
 
             var details = new ProblemDetails()
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                Title = "The specified resource was not found.",
-                Detail = exception.Message
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4",
+                Title = "NotFound",
+                Detail = exception?.Message
             };
 
             context.Result = new NotFoundObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleGatewayTimeoutException(ExceptionContext context)
+        {
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status504GatewayTimeout,
+                Title = "GatewayTimeout",
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.5",
+                Detail = context.Exception.Message
+            };
+
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status504GatewayTimeout,
+            };
+
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleServiceUnavailableException(ExceptionContext context)
+        {
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status503ServiceUnavailable,
+                Title = "ServiceUnavailable",
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.4",
+                Detail = context.Exception.Message
+            };
+
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status503ServiceUnavailable
+            };
 
             context.ExceptionHandled = true;
         }
