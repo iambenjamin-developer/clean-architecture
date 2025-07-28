@@ -3,6 +3,7 @@ using Application.Products.Commands.CreateProduct;
 using Application.Products.Commands.DeleteProduct;
 using Application.Products.Commands.UpdateProduct;
 using Application.Products.DTOs;
+using Application.Products.Queries.GetProductById;
 using Application.Products.Queries.GetProductsWithPagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,13 @@ namespace API.Controllers
         public async Task<ActionResult<PaginatedList<ProductDto>>> GetProductsWithPagination([FromQuery] GetProductsWithPaginationQuery query)
         {
             return await Mediator.Send(query);
+        }
+
+
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<ProductDto>> GetProductById(long id)
+        {
+            return await Mediator.Send(new GetProductByIdQuery { Id = id });
         }
 
 

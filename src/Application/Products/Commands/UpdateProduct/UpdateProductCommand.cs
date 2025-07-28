@@ -1,4 +1,6 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Products.Commands.UpdateProduct
@@ -32,8 +34,7 @@ namespace Application.Products.Commands.UpdateProduct
 
             if (entity == null)
             {
-                //  throw new NotFoundException(nameof(Product), request.Id);
-                throw new Exception();
+                throw new NotFoundException(nameof(Product), request.Id);
             }
 
             entity.SKU = request.SKU;
