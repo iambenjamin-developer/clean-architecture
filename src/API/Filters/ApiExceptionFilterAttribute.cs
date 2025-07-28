@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace API.Filters
 {
@@ -15,6 +14,7 @@ namespace API.Filters
             // Register known exception types and handlers.
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
+                { typeof(BadRequestException), HandleBadRequestException },
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(GatewayTimeoutException), HandleGatewayTimeoutException },
                 { typeof(ServiceUnavailableException), HandleServiceUnavailableException },
@@ -68,6 +68,23 @@ namespace API.Filters
             var details = new ValidationProblemDetails(context.ModelState)
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            };
+
+            context.Result = new BadRequestObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleBadRequestException(ExceptionContext context)
+        {
+            var exception = context.Exception as BadRequestException;
+
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "BadRequest",
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                Detail = context.Exception.Message
             };
 
             context.Result = new BadRequestObjectResult(details);
