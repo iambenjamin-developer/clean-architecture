@@ -30,9 +30,6 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(p => p.Price)
                   .HasColumnType("decimal(18,2)");
 
-            builder.Property(p => p.ImageUrl)
-                  .HasMaxLength(200);
-
             builder.HasOne(p => p.Category)
                   .WithMany(c => c.Products)
                   .HasForeignKey(p => p.CategoryId)
