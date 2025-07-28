@@ -1,4 +1,5 @@
-﻿using Application.Mappings;
+﻿using Application.DTOs.Categories;
+using Application.Mappings;
 using AutoMapper;
 using Domain.Entities;
 
@@ -14,6 +15,9 @@ namespace Application.DTOs.Products
         public int Stock { get; set; }
         public double Rating { get; set; }
         public string? ImageUrl { get; set; }
+
+        //public CategoryDto Category { get; set; }
+        
 
         public void Mapping(Profile profile)
         {
