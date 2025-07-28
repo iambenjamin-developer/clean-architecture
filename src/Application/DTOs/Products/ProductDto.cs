@@ -16,11 +16,12 @@ namespace Application.DTOs.Products
         public double Rating { get; set; }
         public string? ImageUrl { get; set; }
 
-        //public CategoryDto Category { get; set; }
+        public CategoryDto Category { get; set; }
         
 
         public void Mapping(Profile profile)
         {
+            profile.CreateMap<Category, CategoryDto>();
             profile.CreateMap<Product, ProductDto>();
         }
     }

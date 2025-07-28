@@ -10,7 +10,7 @@ namespace Application.DTOs.Categories
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Category, CategoryDto>();
+            profile.CreateMap<Category, CategoryDto>().ReverseMap();
         }
     }
 }
