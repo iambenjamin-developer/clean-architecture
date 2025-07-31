@@ -1,8 +1,11 @@
 ﻿using Application.Common.Interfaces;
+using Application.Workshops.Interfaces;
 using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 
 namespace Infrastructure
 {
@@ -24,6 +27,25 @@ namespace Infrastructure
             }
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+
+
+            services.AddHttpClient<IHttpClientService, HttpClientService>((serviceProvider, client) =>
+            {
+                string url = configuration["WorkshopApi:Url"];
+                string username = configuration["WorkshopApi:Username"];
+                string password = configuration["WorkshopApi:Password"];
+
+                client.BaseAddress = new Uri(url);
+                var credentials = Convert.ToBase64String(
+                    Encoding.ASCII.GetBytes($"{username}:{password}")
+                );
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
+            });
+
+            services.AddMemoryCache();
+
+            services.AddScoped<IWorkshopService, WorkshopService>();
 
             return services;
         }
