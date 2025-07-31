@@ -5,7 +5,6 @@ using Application.Products.Commands.DeleteProduct;
 using Application.Products.Commands.UpdateProduct;
 using Application.Products.Queries.GetProductById;
 using Application.Products.Queries.GetProductsWithPagination;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,8 +16,6 @@ namespace API.Controllers
     /// Permite consultar, crear, actualizar y eliminar productos.
     /// Todos los endpoints devuelven códigos HTTP adecuados según el resultado de la operación.
     /// </remarks>
-    //[Authorize]
-    [AllowAnonymous]
     public class ProductsController : ApiController
     {
         /// <summary>
