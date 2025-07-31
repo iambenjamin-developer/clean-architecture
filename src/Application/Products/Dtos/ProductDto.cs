@@ -1,9 +1,9 @@
-﻿using Application.DTOs.Categories;
+﻿using Application.Categories.DTOs;
 using Application.Mappings;
 using AutoMapper;
 using Domain.Entities;
 
-namespace Application.DTOs.Products
+namespace Application.Products.Dtos
 {
     public class ProductDto : IMapFrom<Product>
     {

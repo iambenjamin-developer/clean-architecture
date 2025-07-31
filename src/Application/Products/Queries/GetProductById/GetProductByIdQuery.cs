@@ -1,6 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.DTOs.Products;
+using Application.Products.Dtos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;

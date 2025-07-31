@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 
-namespace Application.DTOs.Categories
+namespace Application.Categories.DTOs
 {
     public class CategoryDto
     {
