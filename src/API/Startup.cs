@@ -22,6 +22,8 @@ namespace API
             services.AddApplication();
             services.AddInfrastructure(Configuration);
 
+            services.AddMemoryCache();
+
             services.AddControllers(options =>
             {
                 options.Filters.Add<ApiExceptionFilterAttribute>(); // Register the global exception filter
@@ -33,7 +35,12 @@ namespace API
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
