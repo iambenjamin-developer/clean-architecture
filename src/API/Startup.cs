@@ -22,6 +22,8 @@ namespace API
             services.AddApplication();
             services.AddInfrastructure(Configuration);
 
+            services.AddMemoryCache();
+
             services.AddControllers(options =>
             {
                 options.Filters.Add<ApiExceptionFilterAttribute>(); // Register the global exception filter

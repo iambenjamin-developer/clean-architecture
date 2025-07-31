@@ -43,8 +43,6 @@ namespace Infrastructure
                     new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
             });
 
-            services.AddMemoryCache();
-
             services.AddScoped<IWorkshopService, WorkshopService>();
 
             return services;

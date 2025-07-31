@@ -29,24 +29,5 @@ namespace API.Controllers
             return await Mediator.Send(new GetAllCategoriesQuery());
         }
 
-
-
-        /*
-        private readonly IWorkshopService _workshopService;
-
-        public CategoriesController(IWorkshopService workshopService)
-        {
-            _workshopService = workshopService;
-        }
-
-        [HttpGet("id")]
-        public async Task<IActionResult> Get(int id)
-        {
-            bool workshopExists = await _workshopService.ExistsAsync(id);
-            return Ok(workshopExists);
-        }
-        */
-
-
     }
 }
